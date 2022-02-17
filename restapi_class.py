@@ -169,9 +169,22 @@ class RESTAPI:
             # PUT
             # "summary": "Обновление атрибутов объекта",
             # "description": "Обновление атрибутов объекта"
+            # PAYLOAD
+            # Атрибуты
+            # [
+            #   {
+            #       "Наименование": "Прибор учета",
+            #       "Место установки": "guid"
+            #   }
+            # ]
             # POST
             # "summary": "Добавление объекта",
             # "description": "Добавление объекта с названием в определенный класс"
+            # PAYLOAD
+            # Название объекта
+            # {
+            #     "caption": "string"
+            # }
             # DELETE
             # "summary": "Удалить объект",
             # "description": "Удалить объект по заданному guid"
@@ -230,6 +243,13 @@ class RESTAPI:
             # POST
             # "summary": "Добавление прибора учета",
             # "description": "Добавление прибора учета с названием в определенный класс"
+            # PAYLOAD
+            # guid типа оборудования и серийный номер
+            # {
+            #   "equipmenttype_guid": "string",
+            #   "serialnumber": "string"
+            # }
+            #
             'METER': ['meter'],
 
             # GET
@@ -249,6 +269,10 @@ class RESTAPI:
             # PUT
             # "summary": "Запись данных в точку учета",
             # "description": "записывает данные по заданному параметру в точку учета"
+            # Массив пар дата-время - значение
+            # [
+            #     {}
+            # ]
             'METERPOINT_PARAMETER': ['meterpointparameters', self.meterpointGuid, self.parameterGuid],
 
             # DELETE
@@ -262,6 +286,11 @@ class RESTAPI:
             # PUT
             # "summary": "Запись данных в прибор учета",
             # "description": "записывает данные по заданному параметру в прибор учета"
+            # PAYLOAD
+            # Массив пар дата-время - значение
+            # [
+            #     {}
+            # ]
             'METER_PARAMETER': ['meterparameters', self.meterGuid, self.parameterGuid],
 
             # GET
@@ -288,6 +317,11 @@ class RESTAPI:
             # PUT
             # "summary": "Запись данных в прибор учета",
             # "description": "записывает события по заданному прибору учета"
+            # PAYLOAD
+            # Массив пар дата-время - значение
+            # [
+            #     {}
+            # ]
             'METEREVENT': ['meterevents', self.meterGuid, self.eventGuid]
         }
         return self.REST_API.get(param)
