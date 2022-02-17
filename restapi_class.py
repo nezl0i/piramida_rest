@@ -177,6 +177,10 @@ class RESTAPI:
             #       "Место установки": "guid"
             #   }
             # ]
+            # Массив пар дата/время: значение
+            # [
+            #     {}
+            # ]
             # POST
             # "summary": "Добавление объекта",
             # "description": "Добавление объекта с названием в определенный класс"
@@ -388,6 +392,7 @@ if __name__ == '__main__':
     rest.dtfrom = ''
     rest.dtto = ''
 
+    # ONLY from method POST and PUT !
     payload = {'12.12.2019': '99999999'}
 
     rest.get_value(param='OBJECT_GUID', payloads=payload)
