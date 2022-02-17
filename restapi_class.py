@@ -309,7 +309,7 @@ class RESTAPI:
         tmp = self.check_param(param)
 
         filename = '_'.join(tmp)
-        path = os.path.join("../REST_API/log", f'{filename}.json')
+        path = os.path.join("log", f'{filename}.json')
 
         tmp.insert(0, self.url)
         data = '/'.join(tmp)
