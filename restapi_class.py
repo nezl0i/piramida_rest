@@ -1,9 +1,6 @@
 import json
 import requests
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class RESTAPI:
@@ -268,7 +265,9 @@ class RESTAPI:
             # GET
             # "summary": "Получить данные по определенному параметру на заданной точки учета за указанный период",
             # "description": "получение данных"
-            'METERPOINT_PARAMETERS': ['meterpointparameters', self.meterpointGuid, self.parameterGuid, self.dtfrom, self.dtto],
+            'METERPOINT_PARAMETERS': [
+                'meterpointparameters', self.meterpointGuid, self.parameterGuid, self.dtfrom, self.dtto
+            ],
 
             # PUT
             # "summary": "Запись данных в точку учета",
@@ -306,7 +305,9 @@ class RESTAPI:
             # "summary": "Получить данные по определенному параметру по заданному списку приборов учета
             # (передается в payload guid через запятую) за указанный период",
             # "description": "получение данных"
-            'METERPOINT_BACH_PARAMETER': ['meterpointbymeterparametersbatch', self.parameterGuid, self.dtfrom, self.dtto],
+            'METERPOINT_BACH_PARAMETER': [
+                'meterpointbymeterparametersbatch', self.parameterGuid, self.dtfrom, self.dtto
+            ],
 
             # GET
             # "summary": "Получить события по заданному прибору учета за указанный период",
@@ -337,7 +338,7 @@ class RESTAPI:
         if request.status_code == 200:
             print(f'{request.json()}')
         else:
-            print("Запрос не отработан. Проверьте параметры")
+            print("Не удалось выполнить запрос. Проверьте параметры.")
 
         return request.json()
 
@@ -345,9 +346,16 @@ class RESTAPI:
 
         request: any = None
         tmp = self.check_param(param)
+        directory = 'log'
+
+        if not os.path.exists(directory):
+            try:
+                os.mkdir(directory)
+            except OSError as e:
+                print(e)
 
         filename = '_'.join(tmp)
-        path = os.path.join("log", f'{filename}.json')
+        path = os.path.join(directory, f'{filename}.json')
 
         tmp.insert(0, self.url)
         data = '/'.join(tmp)
@@ -369,30 +377,3 @@ class RESTAPI:
         with open(path, 'w', encoding="utf-8") as f:
             data = json.dumps(response, ensure_ascii=False)
             f.write(data)
-
-
-if __name__ == '__main__':
-
-    url = os.getenv('url')
-    method = 'GET'
-
-    rest = RESTAPI(url, method=method)
-
-    rest.meterGuid = '05dec902-9b7e-4d31-a3f1-9e11d8fd53e2'
-    rest.parameterGuid = 'd2c9783f-611c-47c7-83af-ce65c8da48fd'
-    rest.objectGuid = '92f2a50f-e85b-4e18-b84b-6b27ad5bdccd'    # guid точки учета, параметра, прибора учета, события
-    rest.classGuid = ''
-    rest.pointGuid = ''
-    rest.eventGuid = ''
-    rest.meterpointGuid = ''
-    rest.attributeName = ''
-    rest.serialNumber = ''
-    rest.value = ''
-    rest.dt = ''
-    rest.dtfrom = ''
-    rest.dtto = ''
-
-    # ONLY from method POST and PUT !
-    payload = {'12.12.2019': '99999999'}
-
-    rest.get_value(param='OBJECT_GUID', payloads=payload)
